@@ -1,4 +1,7 @@
 <resources>
+    <string name="summary_format">%1$s\n%2$s\nUr. %3$s\nTryb: %4$s\nPoziom: %5$d/10\nNewsletter: %6$s</string>
+    <string name="yes_short">tak</string>
+    <string name="no_short">nie</string>
     <string name="app_name">Zapisy na kurs</string>
 
     <string name="header">Zapisy na kurs</string>
