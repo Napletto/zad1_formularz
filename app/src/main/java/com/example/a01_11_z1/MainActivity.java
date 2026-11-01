@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.util.Patterns;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.snackbar.Snackbar;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
 
@@ -63,7 +65,14 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCourse.setAdapter(adapter);
     }
-
+    private void askForConfirmation() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.confirm_title)
+                .setMessage(R.string.confirm_message)
+                .setPositiveButton(R.string.yes, (dialog, which) -> submitForm())
+                .setNegativeButton(R.string.no, null)
+                .show();
+    }
     private void setUpListeners() {
         // regulamin odblokowuje przycisk wysyłania
         cbTerms.setOnCheckedChangeListener((buttonView, isChecked) ->
@@ -72,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         btnBirthDate.setOnClickListener(v -> showDatePicker());
         btnSubmit.setOnClickListener(v -> {
             if (validateForm()) {
-                submitForm();
+                askForConfirmation();
             }
         });
 
@@ -156,6 +165,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void submitForm() {
         tvSummary.setText(buildSummary());
+
+        Snackbar.make(findViewById(R.id.main), R.string.sent, Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo, v -> tvSummary.setText(""))
+                .show();
     }
 
     private String buildSummary() {

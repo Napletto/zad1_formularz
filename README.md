@@ -1,0 +1,1 @@
+Lambdy można stosować tylko wtedy, gdy interfejs ma jedną metodę do zaimplementowania. W przypadku CheckBoxa można użyć lambdy, ponieważ wymaga on tylko jednej metody. SeekBar wymaga trzech metod, dlatego trzeba użyć klasy anonimowej, nawet jeśli dwie z nich pozostają puste.
