@@ -12,7 +12,8 @@ import android.widget.TextView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
+import android.util.Patterns;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
@@ -69,7 +70,11 @@ public class MainActivity extends AppCompatActivity {
                 btnSubmit.setEnabled(isChecked));
 
         btnBirthDate.setOnClickListener(v -> showDatePicker());
-        btnSubmit.setOnClickListener(v -> submitForm());
+        btnSubmit.setOnClickListener(v -> {
+            if (validateForm()) {
+                submitForm();
+            }
+        });
 
         // suwak - trzy metody, więc klasa anonimowa zamiast lambdy
         sbLevel.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -114,6 +119,39 @@ public class MainActivity extends AppCompatActivity {
 
         dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         dialog.show();
+    }
+
+    private boolean validateForm() {
+        String name = etName.getText().toString().trim();
+        if (name.isEmpty()) {
+            etName.setError(getString(R.string.error_name));
+            etName.requestFocus();
+            return false;
+        }
+
+        String email = etEmail.getText().toString().trim();
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etEmail.setError(getString(R.string.error_email));
+            etEmail.requestFocus();
+            return false;
+        }
+
+        if (birthDate.isEmpty()) {
+            Toast.makeText(this, R.string.error_date, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (spCourse.getSelectedItemPosition() == 0) {       // pozycja 0 = brak wyboru
+            Toast.makeText(this, R.string.error_course, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (rgMode.getCheckedRadioButtonId() == -1) {        // -1 = nic nie zaznaczono
+            Toast.makeText(this, R.string.error_mode, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
     private void submitForm() {
